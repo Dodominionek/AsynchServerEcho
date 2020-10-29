@@ -13,6 +13,9 @@ namespace ServerEchoLibrary
     {
         byte[] welcomeMessage;
         byte[] continueMessage;
+        byte[] log;
+        byte[] pass;
+        byte[] space;
         byte[] goodMessage;
         byte[] badMessage;
         byte[] message;
@@ -20,7 +23,10 @@ namespace ServerEchoLibrary
         public delegate void TransmissionDataDelegate(NetworkStream stream);
         public AsyncServerEcho(IPAddress IP, int port) : base(IP, port)
         {
-            this.welcomeMessage = new ASCIIEncoding().GetBytes("Dzien dobry! Podaj login, a nastepnie haslo. ");
+            this.welcomeMessage = new ASCIIEncoding().GetBytes("Dzien dobry! Podaj login, a nastepnie haslo. Zatwierdz je za pomoca klawisza ENTER. ");
+            this.log = new ASCIIEncoding().GetBytes("wpisany login: ");
+            this.pass = new ASCIIEncoding().GetBytes("wpisane haslo: ");
+            this.space = new ASCIIEncoding().GetBytes(" ");
             this.continueMessage = new ASCIIEncoding().GetBytes("Aby kontynuowac podaj login, a nastepnie haslo. ");
             this.goodMessage = new ASCIIEncoding().GetBytes("Dobry login i haslo! ");
             this.badMessage = new ASCIIEncoding().GetBytes("Bledny login lub haslo! Prosze sprobowac ponownie. ");
@@ -44,6 +50,7 @@ namespace ServerEchoLibrary
         protected override void BeginDataTransmission(NetworkStream stream)
         {
             byte[] buffer = new byte[Buffer_size];
+            var space = new ASCIIEncoding().GetBytes(" ");
             stream.Write(welcomeMessage, 0, welcomeMessage.Length);
             while (true)
             {
@@ -54,7 +61,9 @@ namespace ServerEchoLibrary
                     {
                         responseLength = stream.Read(buffer, 0, buffer.Length);
                     }
+                    stream.Write(log, 0, log.Length);
                     stream.Write(buffer, 0, buffer.Length);
+                    stream.Write(space, 0, space.Length);
                     var login = Encoding.UTF8.GetString(buffer, 0, responseLength);
                     buffer = new byte[Buffer_size];
                     responseLength = stream.Read(buffer, 0, buffer.Length);
@@ -62,12 +71,14 @@ namespace ServerEchoLibrary
                     {
                         responseLength = stream.Read(buffer, 0, buffer.Length);
                     }
+                    stream.Write(pass, 0, pass.Length);
                     stream.Write(buffer, 0, buffer.Length);
+                    stream.Write(space, 0, space.Length);
                     var password = Encoding.UTF8.GetString(buffer, 0, responseLength);
                     buffer = new byte[Buffer_size];
                     if (login == "login" && password == "password")
                     {
-                        message = new ASCIIEncoding().GetBytes("Prosze podac imie, a ja odpowiem czy to imie chlopca czy dziewczynki. ");
+                        message = new ASCIIEncoding().GetBytes("Prosze podac imie, a ja odpowiem czy to imie chlopca czy dziewczynki. Zatwierdz imie za pomoca klawisza ENTER. ");
                         stream.Write(goodMessage, 0, goodMessage.Length);
                         stream.Write(message, 0, message.Length);
                         responseLength = stream.Read(buffer, 0, buffer.Length);
