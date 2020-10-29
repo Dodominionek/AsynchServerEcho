@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -56,6 +56,7 @@ namespace ServerEchoLibrary
                     }
                     stream.Write(buffer, 0, buffer.Length);
                     var login = Encoding.UTF8.GetString(buffer, 0, responseLength);
+                    buffer = new byte[Buffer_size];
                     responseLength = stream.Read(buffer, 0, buffer.Length);
                     if (Encoding.UTF8.GetString(buffer, 0, responseLength) == "\r\n")
                     {
@@ -63,7 +64,8 @@ namespace ServerEchoLibrary
                     }
                     stream.Write(buffer, 0, buffer.Length);
                     var password = Encoding.UTF8.GetString(buffer, 0, responseLength);
-                    if(login == "login" && password == "password")
+                    buffer = new byte[Buffer_size];
+                    if (login == "login" && password == "password")
                     {
                         message = new ASCIIEncoding().GetBytes("Prosze podac imie, a ja odpowiem czy to imie chlopca czy dziewczynki. ");
                         stream.Write(goodMessage, 0, goodMessage.Length);
@@ -76,6 +78,7 @@ namespace ServerEchoLibrary
                         Check(buffer, responseLength);
                         stream.Write(message, 0, message.Length);
                         stream.Write(continueMessage, 0, continueMessage.Length);
+                        buffer = new byte[Buffer_size];
                     }
                     else
                     {
@@ -84,6 +87,7 @@ namespace ServerEchoLibrary
                         {
                             responseLength = stream.Read(buffer, 0, buffer.Length);
                         }
+                        buffer = new byte[Buffer_size];
                     }
                 }
                 catch (IOException e)
@@ -102,11 +106,11 @@ namespace ServerEchoLibrary
             last = Mess[Mess.Length - 1];
             if (last == 'a' && check == true)
             {
-                message = new ASCIIEncoding().GetBytes("To imie dziewczynki ");
+                message = new ASCIIEncoding().GetBytes(Mess + ": To imie dziewczynki! ");
             }
             else if (check == true)
             {
-                message = new ASCIIEncoding().GetBytes("To imie chlopca ");
+                message = new ASCIIEncoding().GetBytes(Mess + ": To imie chlopca! ");
             }
         }
 
