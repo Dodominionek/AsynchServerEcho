@@ -9,7 +9,7 @@ using System.Text;
 
 namespace ServerEchoLibrary
 {
-    public class AsyncServerEcho : AbstractServerEcho
+    public class AsynchServerEcho : AbstractServerEcho
     {
         byte[] welcomeMessage;
         byte[] continueMessage;
@@ -21,7 +21,7 @@ namespace ServerEchoLibrary
         byte[] message;
 
         public delegate void TransmissionDataDelegate(NetworkStream stream);
-        public AsyncServerEcho(IPAddress IP, int port) : base(IP, port)
+        public AsynchServerEcho(IPAddress IP, int port) : base(IP, port)
         {
             this.welcomeMessage = new ASCIIEncoding().GetBytes("Dzien dobry! Podaj login, a nastepnie haslo. Zatwierdz je za pomoca klawisza ENTER. ");
             this.log = new ASCIIEncoding().GetBytes("wpisany login: ");
@@ -87,6 +87,7 @@ namespace ServerEchoLibrary
                             responseLength = stream.Read(buffer, 0, buffer.Length);
                         }
                         Check(buffer, responseLength);
+                        writeToFile(Encoding.UTF8.GetString(message, 0, message.Length));
                         stream.Write(message, 0, message.Length);
                         stream.Write(continueMessage, 0, continueMessage.Length);
                         buffer = new byte[Buffer_size];
@@ -130,6 +131,26 @@ namespace ServerEchoLibrary
             StartListening();
             AcceptClient();
         }
+
+        
+        public void writeToFile(String text)
+        {
+            string path = System.IO.Directory.GetCurrentDirectory();
+            string filename = path + @"\results.txt";
+            if (File.Exists(filename))
+            {
+                File.Delete(filename);
+            }
+            using (FileStream fs = File.Create(filename))
+            {
+            }
+            using (System.IO.StreamWriter file =
+            new System.IO.StreamWriter(filename, true))
+            {
+                file.WriteLine(text);
+            }
+        }
+        
     }
 }
 
