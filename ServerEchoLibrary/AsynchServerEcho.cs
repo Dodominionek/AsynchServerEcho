@@ -128,12 +128,12 @@ namespace ServerEchoLibrary
 
         public override void Start()
         {
+            createFile();
             StartListening();
             AcceptClient();
         }
 
-        
-        public void writeToFile(String text)
+        public void createFile()
         {
             string path = System.IO.Directory.GetCurrentDirectory();
             string filename = path + @"\results.txt";
@@ -144,6 +144,13 @@ namespace ServerEchoLibrary
             using (FileStream fs = File.Create(filename))
             {
             }
+        }
+
+        
+        public void writeToFile(String text)
+        {
+            string path = System.IO.Directory.GetCurrentDirectory();
+            string filename = path + @"\results.txt";
             using (System.IO.StreamWriter file =
             new System.IO.StreamWriter(filename, true))
             {
