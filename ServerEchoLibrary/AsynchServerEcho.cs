@@ -133,12 +133,12 @@ namespace ServerEchoLibrary
 
         public override void Start()
         {
-            createFile();
+            createFiles();
             StartListening();
             AcceptClient();
         }
 
-        public void createFile()
+        public void createFiles()
         {
             string path = System.IO.Directory.GetCurrentDirectory();
             string filename = path + @"\results.txt";
@@ -148,6 +148,32 @@ namespace ServerEchoLibrary
             }
             using (FileStream fs = File.Create(filename))
             {
+            }
+            filename = path + @"\login.txt";
+            if (File.Exists(filename))
+            {
+                File.Delete(filename);
+            }
+            using (FileStream fs = File.Create(filename))
+            {
+            }
+            using (System.IO.StreamWriter file =
+            new System.IO.StreamWriter(filename, true))
+            {
+                file.WriteLine("login");
+            }
+            filename = path + @"\password.txt";
+            if (File.Exists(filename))
+            {
+                File.Delete(filename);
+            }
+            using (FileStream fs = File.Create(filename))
+            {
+            }
+            using (System.IO.StreamWriter file =
+            new System.IO.StreamWriter(filename, true))
+            {
+                file.WriteLine("password");
             }
         }
 
