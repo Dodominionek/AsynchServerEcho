@@ -76,7 +76,12 @@ namespace ServerEchoLibrary
                     stream.Write(space, 0, space.Length);
                     var password = Encoding.UTF8.GetString(buffer, 0, responseLength);
                     buffer = new byte[Buffer_size];
-                    if (login == "login" && password == "password")
+                    string pathLogPas = System.IO.Directory.GetCurrentDirectory();
+                    string fileLogin = File.ReadAllText(pathLogPas + @"\login.txt");
+                    string filePassword = File.ReadAllText(pathLogPas + @"\password.txt");
+                    Console.WriteLine(filePassword);
+                    Console.WriteLine(fileLogin);
+                    if (login == fileLogin && password == filePassword)
                     {
                         message = new ASCIIEncoding().GetBytes("Prosze podac imie, a ja odpowiem czy to imie chlopca czy dziewczynki. Zatwierdz imie za pomoca klawisza ENTER. ");
                         stream.Write(goodMessage, 0, goodMessage.Length);
