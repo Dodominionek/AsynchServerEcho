@@ -135,9 +135,9 @@ namespace ServerEchoLibrary
         public override void Start()
         {
             Console.WriteLine("Prosze podac login: ");
-            string pass = Console.ReadLine();
-            Console.WriteLine("Prosze podac haslo: ");
             string log = Console.ReadLine();
+            Console.WriteLine("Prosze podac haslo: ");
+            string pass = Console.ReadLine();
             Console.WriteLine("Wprowadzony login: " + log);
             Console.WriteLine("Wprowadzone haslo: " + pass);
             pass = Regex.Replace(pass, @"\t|\n|\r", "");
