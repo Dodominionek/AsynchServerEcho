@@ -48,6 +48,7 @@ namespace ServerEchoLibrary
         private void TransmissionCallback(IAsyncResult ar)
         {
         }
+
         protected override void BeginDataTransmission(NetworkStream stream)
         {
             byte[] buffer = new byte[Buffer_size];
@@ -153,36 +154,57 @@ namespace ServerEchoLibrary
             string filename = path + @"\results.txt";
             if (File.Exists(filename))
             {
-                File.Delete(filename);
             }
             using (FileStream fs = File.Create(filename))
             {
             }
             filename = path + @"\login.txt";
-            if (!File.Exists(filename))
+            if (File.Exists(filename))
             {
                 File.Delete(filename);
+                using (FileStream fs = File.Create(filename))
+                {
+                }
+                using (System.IO.StreamWriter file =
+                new System.IO.StreamWriter(filename, true))
+                {
+                    file.WriteLine(log);
+                }
             }
-            using (FileStream fs = File.Create(filename))
+            else
             {
-            }
-            using (System.IO.StreamWriter file =
-            new System.IO.StreamWriter(filename, true))
-            {
-                file.WriteLine(log);
+                using (FileStream fs = File.Create(filename))
+                {
+                }
+                using (System.IO.StreamWriter file =
+                new System.IO.StreamWriter(filename, true))
+                {
+                    file.WriteLine(log);
+                }
             }
             filename = path + @"\password.txt";
-            if (!File.Exists(filename))
+            if (File.Exists(filename))
             {
                 File.Delete(filename);
+                using (FileStream fs = File.Create(filename))
+                {
+                }
+                using (System.IO.StreamWriter file =
+                new System.IO.StreamWriter(filename, true))
+                {
+                    file.WriteLine(pass);
+                }
             }
-            using (FileStream fs = File.Create(filename))
+            else
             {
-            }
-            using (System.IO.StreamWriter file =
-            new System.IO.StreamWriter(filename, true))
-            {
-                file.WriteLine(pass);
+                using (FileStream fs = File.Create(filename))
+                {
+                }
+                using (System.IO.StreamWriter file =
+                new System.IO.StreamWriter(filename, true))
+                {
+                    file.WriteLine(pass);
+                }
             }
         }
 
