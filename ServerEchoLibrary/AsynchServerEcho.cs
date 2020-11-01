@@ -142,7 +142,7 @@ namespace ServerEchoLibrary
             Console.WriteLine("Wprowadzone haslo: " + pass);
             pass = Regex.Replace(pass, @"\t|\n|\r", "");
             log = Regex.Replace(log, @"\t|\n|\r", "");
-            createFiles(pass, log);
+            createFiles(log, pass);
             StartListening();
             AcceptClient();
         }
