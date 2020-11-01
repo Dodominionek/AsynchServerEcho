@@ -6,6 +6,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace ServerEchoLibrary
 {
@@ -79,8 +80,8 @@ namespace ServerEchoLibrary
                     string pathLogPas = System.IO.Directory.GetCurrentDirectory();
                     string fileLogin = File.ReadAllText(pathLogPas + @"\login.txt");
                     string filePassword = File.ReadAllText(pathLogPas + @"\password.txt");
-                    Console.WriteLine(filePassword);
-                    Console.WriteLine(fileLogin);
+                    fileLogin = Regex.Replace(fileLogin, @"\t|\n|\r", "");
+                    filePassword = Regex.Replace(filePassword, @"\t|\n|\r", "");
                     if (login == fileLogin && password == filePassword)
                     {
                         message = new ASCIIEncoding().GetBytes("Prosze podac imie, a ja odpowiem czy to imie chlopca czy dziewczynki. Zatwierdz imie za pomoca klawisza ENTER. ");
@@ -133,12 +134,20 @@ namespace ServerEchoLibrary
 
         public override void Start()
         {
-            createFiles();
+            Console.WriteLine("Prosze podac login: ");
+            string pass = Console.ReadLine();
+            Console.WriteLine("Prosze podac haslo: ");
+            string log = Console.ReadLine();
+            Console.WriteLine("Wprowadzony login: " + log);
+            Console.WriteLine("Wprowadzone haslo: " + pass);
+            pass = Regex.Replace(pass, @"\t|\n|\r", "");
+            log = Regex.Replace(log, @"\t|\n|\r", "");
+            createFiles(pass, log);
             StartListening();
             AcceptClient();
         }
 
-        public void createFiles()
+        public void createFiles(string log, string pass)
         {
             string path = System.IO.Directory.GetCurrentDirectory();
             string filename = path + @"\results.txt";
@@ -150,7 +159,7 @@ namespace ServerEchoLibrary
             {
             }
             filename = path + @"\login.txt";
-            if (File.Exists(filename))
+            if (!File.Exists(filename))
             {
                 File.Delete(filename);
             }
@@ -160,10 +169,10 @@ namespace ServerEchoLibrary
             using (System.IO.StreamWriter file =
             new System.IO.StreamWriter(filename, true))
             {
-                file.WriteLine("login");
+                file.WriteLine(log);
             }
             filename = path + @"\password.txt";
-            if (File.Exists(filename))
+            if (!File.Exists(filename))
             {
                 File.Delete(filename);
             }
@@ -173,7 +182,7 @@ namespace ServerEchoLibrary
             using (System.IO.StreamWriter file =
             new System.IO.StreamWriter(filename, true))
             {
-                file.WriteLine("password");
+                file.WriteLine(pass);
             }
         }
 
