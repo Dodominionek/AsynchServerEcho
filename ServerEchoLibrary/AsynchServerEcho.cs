@@ -10,6 +10,9 @@ using System.Text.RegularExpressions;
 
 namespace ServerEchoLibrary
 {
+    /// <summary>
+    /// This is class for Asynchronous Echo Server.
+    /// </summary>
     public class AsynchServerEcho : AbstractServerEcho
     {
         byte[] welcomeMessage;
@@ -22,6 +25,10 @@ namespace ServerEchoLibrary
         byte[] message;
 
         public delegate void TransmissionDataDelegate(NetworkStream stream);
+
+        /// <summary>
+        /// Constructor for Server. Assigns and encodes messages for client.
+        /// </summary>
         public AsynchServerEcho(IPAddress IP, int port) : base(IP, port)
         {
             this.welcomeMessage = new ASCIIEncoding().GetBytes("Dzien dobry! Podaj login, a nastepnie haslo. Zatwierdz je za pomoca klawisza ENTER. ");
@@ -32,6 +39,10 @@ namespace ServerEchoLibrary
             this.goodMessage = new ASCIIEncoding().GetBytes("Dobry login i haslo! ");
             this.badMessage = new ASCIIEncoding().GetBytes("Bledny login lub haslo! Prosze sprobowac ponownie. ");
         }
+
+        /// <summary>
+        /// Function, which accepts new Client and creates new Delegate for him.
+        /// </summary>
         protected override void AcceptClient()
         {
             while (true)
@@ -49,6 +60,9 @@ namespace ServerEchoLibrary
         {
         }
 
+        /// <summary>
+        /// Function, which controls communication with client and controls receiving and sending messages.
+        /// </summary>
         protected override void BeginDataTransmission(NetworkStream stream)
         {
             byte[] buffer = new byte[Buffer_size];
@@ -116,6 +130,9 @@ namespace ServerEchoLibrary
             }
         }
 
+        /// <summary>
+        /// Function, which checks if name sent by client is male or female.
+        /// </summary>
         public void Check(byte[] ClientMessage, int len)
         {
             String Mess = Encoding.UTF8.GetString(ClientMessage, 0, len).Trim();
@@ -133,6 +150,9 @@ namespace ServerEchoLibrary
             }
         }
 
+        /// <summary>
+        /// Function, which starts Server, asks administrator for login and password for session and assigns it for session.
+        /// </summary>
         public override void Start()
         {
             Console.WriteLine("Prosze podac login: ");
@@ -148,6 +168,9 @@ namespace ServerEchoLibrary
             AcceptClient();
         }
 
+        /// <summary>
+        /// Function, which creates files with results, login and password.
+        /// </summary>
         public void createFiles(string log, string pass)
         {
             string path = System.IO.Directory.GetCurrentDirectory();
@@ -208,7 +231,9 @@ namespace ServerEchoLibrary
             }
         }
 
-        
+        /// <summary>
+        /// Function, which writes results of session for file.
+        /// </summary>
         public void writeToFile(String text)
         {
             string path = System.IO.Directory.GetCurrentDirectory();
