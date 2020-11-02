@@ -15,6 +15,7 @@ namespace ServerEchoLibrary
     /// </summary>
     public class AsynchServerEcho : AbstractServerEcho
     {
+        #region Fields
         byte[] welcomeMessage;
         byte[] continueMessage;
         byte[] log;
@@ -23,9 +24,11 @@ namespace ServerEchoLibrary
         byte[] goodMessage;
         byte[] badMessage;
         byte[] message;
+        #endregion
 
         public delegate void TransmissionDataDelegate(NetworkStream stream);
 
+        #region Properties
         /// <summary>
         /// Constructor for Server. Assigns and encodes messages for client.
         /// </summary>
@@ -39,7 +42,9 @@ namespace ServerEchoLibrary
             this.goodMessage = new ASCIIEncoding().GetBytes("Dobry login i haslo! ");
             this.badMessage = new ASCIIEncoding().GetBytes("Bledny login lub haslo! Prosze sprobowac ponownie. ");
         }
+        #endregion
 
+        #region Functions
         /// <summary>
         /// Function, which accepts new Client and creates new Delegate for him.
         /// </summary>
@@ -244,7 +249,7 @@ namespace ServerEchoLibrary
                 file.WriteLine(text);
             }
         }
-        
+        #endregion
     }
 }
 
